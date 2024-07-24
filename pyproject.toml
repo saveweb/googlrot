@@ -1,0 +1,26 @@
+[project]
+name = "googlrot"
+version = "0.1.0"
+description = "a"
+authors = [
+    {name = "urlrot", email = "yzqzss@yandex.com"},
+]
+dependencies = [
+    "PyGithub>=2.3.0",
+    "motor>=3.5.1",
+    "pytest>=8.2.2",
+    "urlextract>=1.9.0",
+    "tqdm>=4.66.4",
+    "Pygments>=2.18.0",
+]
+requires-python = ">=3.12"
+readme = "README.md"
+license = {text = "AGPL"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
