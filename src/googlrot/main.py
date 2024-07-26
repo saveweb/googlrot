@@ -105,7 +105,7 @@ async def code_mode(g: Github, googl_perfix_queue_collection: AsyncIOMotorCollec
             try:
                 content = result.decoded_content.decode("utf-8")
             except GithubUnknownObjectException as e:
-                if e.message and "404" in e.message:
+                if e.status == 404:
                     logger.error(f"404: {e}, skip")
                     continue
                 else:
