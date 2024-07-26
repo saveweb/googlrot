@@ -110,6 +110,9 @@ async def code_mode(g: Github, googl_perfix_queue_collection: AsyncIOMotorCollec
                     continue
                 else:
                     raise e
+            except UnicodeDecodeError:
+                logger.error(f"UnicodeDecodeError: {result.repository.full_name}, skip")
+                continue
             print("conetnt: ", content[:256])
             for url in extractor.gen_urls(content):
                 assert isinstance(url, str)
