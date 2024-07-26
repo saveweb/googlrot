@@ -5,6 +5,7 @@ import logging.handlers
 import os
 
 from github import Github, Auth
+from github.GithubException import UnknownObjectException as GithubUnknownObjectException
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection
 
 from pymongo.server_api import ServerApi
@@ -101,7 +102,14 @@ async def code_mode(g: Github, googl_perfix_queue_collection: AsyncIOMotorCollec
         for result in g.search_code(f"goo.gl/{prefix} AND NOT is:fork"):
             logger.info(f"Processing {result.repository.full_name} ==")
 
-            content = result.decoded_content.decode("utf-8")
+            try:
+                content = result.decoded_content.decode("utf-8")
+            except GithubUnknownObjectException as e:
+                if e.message and "404" in e.message:
+                    logger.error(f"404: {e}, skip")
+                    continue
+                else:
+                    raise e
             print("conetnt: ", content[:256])
             for url in extractor.gen_urls(content):
                 assert isinstance(url, str)
